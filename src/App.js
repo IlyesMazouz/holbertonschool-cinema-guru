@@ -4,6 +4,7 @@ import SelectInput from './components/general/SelectInput';
 import Button from './components/general/Button';
 import SearchBar from './components/general/SearchBar';
 import Authentication from './routes/auth/Authentication';
+import Dashboard from './routes/dashboard/Dashboard';
 import axios from 'axios';
 import './App.css';
 
@@ -46,7 +47,10 @@ const App = () => {
     <div className="App">
       {isLoggedIn ? (
         <div>
-          <h2>Welcome, {userUsername}!</h2>
+          <Dashboard
+            userUsername={userUsername}
+            setIsLoggedIn={setIsLoggedIn}
+          />
         </div>
       ) : (
         <Authentication
@@ -54,6 +58,7 @@ const App = () => {
           setUserUsername={setUserUsername}
         />
       )}
+
       <SearchBar title={title} setTitle={setTitle} />
       <Input
         label="Your Name"
