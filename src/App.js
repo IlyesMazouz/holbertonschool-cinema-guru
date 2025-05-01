@@ -3,6 +3,7 @@ import Input from './components/general/Input';
 import SelectInput from './components/general/SelectInput';
 import Button from './components/general/Button';
 import SearchBar from './components/general/SearchBar';
+import Authentication from './routes/auth/Authentication';
 import axios from 'axios';
 import './App.css';
 
@@ -44,11 +45,15 @@ const App = () => {
   return (
     <div className="App">
       {isLoggedIn ? (
-        <Dashboard username={userUsername} />
+        <div>
+          <h2>Welcome, {userUsername}!</h2>
+        </div>
       ) : (
-        <Authentication />
+        <Authentication
+          setIsLoggedIn={setIsLoggedIn}
+          setUserUsername={setUserUsername}
+        />
       )}
-
       <SearchBar title={title} setTitle={setTitle} />
       <Input
         label="Your Name"
