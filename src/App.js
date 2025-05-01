@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Input from './components/general/Input';
 import SelectInput from './components/general/SelectInput';
 import Button from './components/general/Button';
 import SearchBar from './components/general/SearchBar';
+import axios from 'axios';
+import './App.css';
 
 const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userUsername, setUserUsername] = useState('');
   const [inputValue, setInputValue] = useState('');
   const [selectValue, setSelectValue] = useState('');
   const [title, setTitle] = useState('');
@@ -18,8 +22,33 @@ const App = () => {
     console.log('Searching for:', title);
   };
 
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken) {
+      axios.post('/api/auth/', {}, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((response) => {
+        setIsLoggedIn(true);
+        setUserUsername(response.data.username);
+      })
+      .catch((error) => {
+        console.error('Error during authentication:', error);
+      });
+    }
+  }, []);
+
   return (
     <div className="App">
+      {isLoggedIn ? (
+        <Dashboard username={userUsername} />
+      ) : (
+        <Authentication />
+      )}
+
       <SearchBar title={title} setTitle={setTitle} />
       <Input
         label="Your Name"
